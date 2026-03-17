@@ -1,0 +1,259 @@
+#:kivy 2.2.1
+
+<DetailScreen>:
+    name: "detail"
+
+    canvas.before:
+        Color:
+            rgba: (0.95, 0.95, 0.97, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(18)
+        spacing: dp(14)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(54)
+            spacing: dp(10)
+
+            Button:
+                text: "arrow_back"
+                font_name: "MaterialIcons"
+                font_size: "24sp"
+                color: (0.15, 0.15, 0.18, 1)
+                size_hint_x: None
+                width: dp(48)
+                background_normal: ""
+                background_color: (0.95, 0.95, 0.97, 1)
+                on_release: root.manager.current = "home"
+
+            Label:
+                text: "Карточка контрагента"
+                color: (0.10, 0.10, 0.12, 1)
+                font_size: "22sp"
+                bold: True
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            bar_width: dp(8)
+            scroll_type: ['bars', 'content']
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(14)
+                padding: [0, 0, 0, dp(12)]
+
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(18)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 0.10)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(4))
+                            size: self.size
+                            radius: [18]
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [18]
+
+                    Label:
+                        id: detail_title
+                        text: "Название компании"
+                        color: (0.10, 0.10, 0.12, 1)
+                        font_size: "24sp"
+                        bold: True
+                        size_hint_y: None
+                        text_size: self.width, None
+                        halign: "left"
+                        valign: "top"
+                        height: self.texture_size[1]
+
+                    Label:
+                        text: "Основные данные контрагента"
+                        color: (0.35, 0.35, 0.40, 1)
+                        font_size: "12sp"
+                        size_hint_y: None
+                        height: dp(18)
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    GridLayout:
+                        id: main_info_grid
+                        cols: 2
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: dp(42)
+                        row_force_default: True
+                        spacing: dp(10)
+                    Button:
+                        text: "Оставить отзыв"
+                        size_hint_y: None
+                        height: dp(46)
+                        background_normal: ""
+                        background_color: (0.10, 0.45, 0.90, 1)
+                        color: (1, 1, 1, 1)
+                        on_release: root.open_review_popup()
+                    Button:
+                        text: "AI-анализ"
+                        size_hint_y: None
+                        height: dp(46)
+                        background_normal: ""
+                        background_color: (0.35, 0.20, 0.85, 1)
+                        color: (1, 1, 1, 1)
+                        on_release: root.load_ai_summary()
+
+                    Label:
+                        id: ai_summary_label
+                        text: ""
+                        color: (0.15, 0.15, 0.18, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "left"
+                        valign: "top"
+                        text_size: self.width, None
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(18)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 0.10)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(4))
+                            size: self.size
+                            radius: [18]
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [18]
+
+                    Label:
+                        text: "Сведения из выписки ЕГРЮЛ"
+                        color: (0.10, 0.10, 0.12, 1)
+                        font_size: "20sp"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(28)
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    Label:
+                        id: detail_status
+                        text: ""
+                        color: (0.15, 0.55, 0.20, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(48)
+                        spacing: dp(10)
+
+                        Button:
+                            text: "Загрузить данные ЕГРЮЛ"
+                            background_normal: ""
+                            background_color: (0.10, 0.45, 0.90, 1)
+                            color: (1, 1, 1, 1)
+                            on_release: root.load_egrul_data()
+
+                        Button:
+                            text: "Скачать выписку PDF"
+                            background_normal: ""
+                            background_color: (0.90, 0.92, 0.96, 1)
+                            color: (0.10, 0.10, 0.12, 1)
+                            on_release: root.download_pdf()
+
+                    GridLayout:
+                        id: egrul_info_grid
+                        cols: 2
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: dp(42)
+                        row_force_default: True
+                        spacing: dp(10)
+
+                    Label:
+                        id: egrul_flags_label
+                        text: "Флаги ЕГРЮЛ: не выявлены"
+                        color: (0.55, 0.20, 0.20, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.width, None
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(18)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 0.10)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(4))
+                            size: self.size
+                            radius: [18]
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [18]
+
+                    Label:
+                        text: "Отзывы пользователей"
+                        color: (0.10, 0.10, 0.12, 1)
+                        font_size: "20sp"
+                        bold: True
+                        size_hint_y: None
+                        height: dp(28)
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    Label:
+                        id: reviews_status
+                        text: ""
+                        color: (0.35, 0.35, 0.40, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    BoxLayout:
+                        id: reviews_container
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(10)

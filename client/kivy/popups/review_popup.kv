@@ -1,0 +1,113 @@
+#:kivy 2.2.1
+
+<ReviewPopup>:
+    size_hint: None, None
+    size: dp(620), dp(460)
+    auto_dismiss: False
+    background_color: (0, 0, 0, 0.35)
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(14)
+
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [18]
+
+        Label:
+            text: "Оставить отзыв"
+            color: (0.10, 0.10, 0.12, 1)
+            font_size: "22sp"
+            bold: True
+            size_hint_y: None
+            height: dp(30)
+
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: dp(42)
+            row_force_default: True
+
+            Label:
+                text: "Вердикт"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            Spinner:
+                id: review_verdict
+                text: "unknown"
+                values: ["ok", "suspicious", "unknown"]
+
+            Label:
+                text: "Рейтинг"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            Spinner:
+                id: review_rating
+                text: "5"
+                values: ["1", "2", "3", "4", "5"]
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(36)
+            spacing: dp(8)
+
+            CheckBox:
+                id: review_anonymous
+                size_hint_x: None
+                width: dp(36)
+
+            Label:
+                text: "Анонимно"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+        Label:
+            text: "Комментарий"
+            color: (0.15, 0.15, 0.18, 1)
+            size_hint_y: None
+            height: dp(24)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        TextInput:
+            id: review_text
+            multiline: True
+            background_normal: ""
+            background_active: ""
+            background_color: (0.97, 0.97, 0.99, 1)
+            foreground_color: (0.10, 0.10, 0.12, 1)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(10)
+
+            Button:
+                text: "Отмена"
+                background_normal: ""
+                background_color: (0.90, 0.92, 0.96, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release: root.dismiss()
+
+            Button:
+                text: "Сохранить отзыв"
+                background_normal: ""
+                background_color: (0.10, 0.45, 0.90, 1)
+                color: (1, 1, 1, 1)
+                on_release: root.on_save()

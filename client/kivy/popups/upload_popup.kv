@@ -1,0 +1,225 @@
+#:kivy 2.2.1
+
+<UploadPopup>:
+    size_hint: 1, 1
+    auto_dismiss: False
+    background_color: (0, 0, 0, 0.35)
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(40)
+
+        Widget:
+            size_hint_y: 0.08
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            FloatLayout:
+                size_hint: None, None
+                width: dp(1020)
+                height: dp(680)
+
+                BoxLayout:
+                    size_hint: None, None
+                    width: dp(1000)
+                    height: dp(660)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    orientation: "vertical"
+                    padding: dp(20)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 0.12)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(5))
+                            size: self.size
+                            radius: [20]
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [20]
+
+                    Label:
+                        text: "Загрузка и предварительная обработка файла"
+                        color: (0.1, 0.1, 0.12, 1)
+                        font_size: "24sp"
+                        bold: True
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+
+                    Label:
+                        id: upload_msg
+                        text: ""
+                        color: (0.85, 0.2, 0.2, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "left"
+                        valign: "middle"
+                        text_size: self.size
+
+                    BoxLayout:
+                        spacing: dp(12)
+
+                        # Левая часть: выбор файла
+                        BoxLayout:
+                            orientation: "vertical"
+                            spacing: dp(8)
+                            size_hint_x: 0.45
+
+                            Label:
+                                text: "Выберите файл"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                text_size: self.size
+                            BoxLayout:
+                                padding: dp(6)
+
+                                canvas.before:
+                                    Color:
+                                        rgba: (0.22, 0.24, 0.28, 1)
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        radius: [12]
+
+                                FileChooserListView:
+                                    id: filechooser
+                                    filters: ["*.csv", "*.xlsx", "*.xls"]
+                                    path: "."
+                                    on_selection: app.root.get_screen("home").preview_selected_file(self.selection)
+
+                        # Правая часть: предпросмотр и настройки очистки
+                        BoxLayout:
+                            orientation: "vertical"
+                            spacing: dp(8)
+                            size_hint_x: 0.55
+                            Label:
+                                text: "Начинать предпросмотр со строки"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                text_size: self.size
+
+                            TextInput:
+                                id: preview_start_row
+                                hint_text: "Например: 1"
+                                multiline: False
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                size_hint_y: None
+                                height: dp(42)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+                                on_text: app.root.get_screen("home").update_preview_from_input(self.text)
+                            Label:
+                                text: "Первые 5 строк файла"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                text_size: self.size
+
+                            ScrollView:
+                                do_scroll_x: True
+                                do_scroll_y: True
+                                bar_width: dp(8)
+                                scroll_type: ['bars', 'content']
+
+                                GridLayout:
+                                    id: preview_table
+                                    cols: 1
+                                    size_hint: None, None
+                                    width: self.minimum_width
+                                    height: self.minimum_height
+                                    row_default_height: dp(34)
+                                    row_force_default: True
+                                    col_default_width: dp(160)
+                                    col_force_default: True
+                                    spacing: dp(2)
+                                    padding: dp(2)
+
+                                    Label:
+                                        text: "Здесь появится предпросмотр после выбора файла"
+                                        color: (0.45, 0.45, 0.50, 1)
+                                        size_hint_y: None
+                                        height: dp(30)
+
+                            Label:
+                                text: "Удалить строки (например: 1,2,5)"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                text_size: self.size
+
+                            TextInput:
+                                id: rows_to_delete
+                                hint_text: "Введите номера строк"
+                                multiline: False
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                size_hint_y: None
+                                height: dp(42)
+
+                            Label:
+                                text: "Столбцы для удаления (например: 0,3 или Название,Комментарий)"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                text_size: self.size
+
+                            TextInput:
+                                id: cols_to_delete
+                                hint_text: "Введите номера или названия столбцов"
+                                multiline: False
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                size_hint_y: None
+                                height: dp(42)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(48)
+                        spacing: dp(10)
+
+                        Button:
+                            text: "Отмена"
+                            background_normal: ""
+                            background_color: (0.90, 0.92, 0.96, 1)
+                            color: (0.10, 0.10, 0.12, 1)
+                            on_release: root.dismiss()
+
+                        Button:
+                            text: "Загрузить справочник ИНН"
+                            background_normal: ""
+                            background_color: (0.10, 0.45, 0.90, 1)
+                            color: (1, 1, 1, 1)
+                            on_release:
+                                app.root.get_screen("home").confirm_operations_file(
+                                filechooser.selection,
+                                preview_start_row.text,
+                                rows_to_delete.text,
+                                cols_to_delete.text,
+                                root
+                                )

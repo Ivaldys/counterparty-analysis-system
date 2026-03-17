@@ -1,0 +1,371 @@
+#:kivy 2.2.1
+
+<MainScreen>:
+    name: "home"
+
+    canvas.before:
+        Color:
+            rgba: (0.95, 0.95, 0.97, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(18)
+        spacing: dp(14)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(54)
+            spacing: dp(10)
+
+            TextInput:
+                id: search_input
+                hint_text: "Поиск по названию или ИНН"
+                multiline: False
+                write_tab: False
+                foreground_color: (0.10, 0.10, 0.12, 1)
+                hint_text_color: (0.55, 0.55, 0.60, 1)
+                background_normal: ""
+                background_active: ""
+                background_color: (1, 1, 1, 1)
+                padding: [dp(12), dp(14), dp(12), dp(14)]
+                on_text: root.on_search(self.text)
+
+            Button:
+                text: "person"
+                font_name: "MaterialIcons"
+                font_size: "24sp"
+                color: (0.15, 0.15, 0.18, 1)
+                size_hint_x: None
+                width: dp(44)
+                background_normal: ""
+                background_color: (0.95, 0.95, 0.97, 1)
+                on_release: root.on_profile()
+
+            Button:
+                text: "Загрузить файл"
+                size_hint_x: None
+                width: dp(150)
+                background_normal: ""
+                background_color: (0.10, 0.45, 0.90, 1)
+                color: (1, 1, 1, 1)
+                on_release: root.open_upload_popup()
+
+            Button:
+                text: "filter_list"
+                font_name: "MaterialIcons"
+                font_size: "24sp"
+                color: (0.15, 0.15, 0.18, 1)
+                size_hint_x: None
+                width: dp(44)
+                background_normal: ""
+                background_color: (0.95, 0.95, 0.97, 1)
+                on_release: root.on_filter()
+
+            Button:
+                text: "sort"
+                font_name: "MaterialIcons"
+                font_size: "24sp"
+                color: (0.15, 0.15, 0.18, 1)
+                size_hint_x: None
+                width: dp(44)
+                background_normal: ""
+                background_color: (0.95, 0.95, 0.97, 1)
+                on_release: root.on_sort()
+
+            Button:
+                text: "tune"
+                font_name: "MaterialIcons"
+                font_size: "24sp"
+                color: (0.15, 0.15, 0.18, 1)
+                size_hint_x: None
+                width: dp(44)
+                background_normal: ""
+                background_color: (0.95, 0.95, 0.97, 1)
+                on_release: root.open_weights_popup()
+
+            ToggleButton:
+                id: hide_sensitive_btn
+                text: "Показать данные"
+                state: "normal"
+                size_hint_x: None
+                width: dp(140)
+                background_normal: ""
+                background_down: ""
+                background_color: (0.90, 0.92, 0.96, 1) if self.state == "normal" else (0.10, 0.45, 0.90, 1)
+                color: (0.10, 0.10, 0.12, 1) if self.state == "normal" else (1, 1, 1, 1)
+                on_state: root.on_toggle_sensitive(self.state)
+
+        Label:
+            id: main_msg
+            text: ""
+            color: (0.85, 0.20, 0.20, 1)
+            size_hint_y: None
+            height: self.texture_size[1] if self.text else 0
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: dp(180)
+            spacing: dp(10)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "Всего"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_total
+                    text: "0"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "Юрлица"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_legal
+                    text: "0"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "ИП / самозанятые"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_ip
+                    text: "0"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "Средняя подозрительность"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_avg_risk
+                    text: "—"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "Высокий риск"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_high_risk
+                    text: "0"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [14]
+                Label:
+                    text: "Неполные карточки"
+                    color: (0.35, 0.35, 0.40, 1)
+                Label:
+                    id: stat_missing
+                    text: "0"
+                    font_size: "24sp"
+                    bold: True
+                    color: (0.10, 0.10, 0.12, 1)
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: 1
+            padding: dp(16)
+            spacing: dp(12)
+
+            canvas.before:
+                Color:
+                    rgba: (0, 0, 0, 0.10)
+                RoundedRectangle:
+                    pos: (self.x, self.y - dp(4))
+                    size: self.size
+                    radius: [18]
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [18]
+
+            Label:
+                text: "Результаты анализа контрагентов"
+                color: (0.10, 0.10, 0.12, 1)
+                font_size: "20sp"
+                bold: True
+                size_hint_y: None
+                height: dp(28)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            Label:
+                text: "После подтверждения загрузки здесь появится таблица с проанализированными контрагентами"
+                color: (0.35, 0.35, 0.40, 1)
+                font_size: "12sp"
+                size_hint_y: None
+                height: dp(20)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+            BoxLayout:
+                size_hint_y: None
+                height: dp(42)
+                spacing: dp(8)
+
+                ToggleButton:
+                    id: tab_all
+                    text: "Все"
+                    state: "down"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: (0.10, 0.45, 0.90, 1) if self.state == "down" else (0.90, 0.92, 0.96, 1)
+                    color: (1, 1, 1, 1) if self.state == "down" else (0.10, 0.10, 0.12, 1)
+                    on_release: root.set_entity_filter("all")
+
+                ToggleButton:
+                    id: tab_legal
+                    text: "Юрлица"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: (0.10, 0.45, 0.90, 1) if self.state == "down" else (0.90, 0.92, 0.96, 1)
+                    color: (1, 1, 1, 1) if self.state == "down" else (0.10, 0.10, 0.12, 1)
+                    on_release: root.set_entity_filter("legal")
+
+                ToggleButton:
+                    id: tab_ip
+                    text: "ИП / самозанятые"
+                    background_normal: ""
+                    background_down: ""
+                    background_color: (0.10, 0.45, 0.90, 1) if self.state == "down" else (0.90, 0.92, 0.96, 1)
+                    color: (1, 1, 1, 1) if self.state == "down" else (0.10, 0.10, 0.12, 1)
+                    on_release: root.set_entity_filter("ip")
+            GridLayout:
+                id: table_header
+                cols: 1
+                size_hint: None, None
+                width: self.minimum_width
+                height: dp(42)
+                spacing: dp(6)
+
+                canvas.before:
+                    Color:
+                        rgba: (0.95, 0.96, 0.98, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
+
+            ScrollView:
+                id: results_scroll
+                size_hint_y: 1
+                do_scroll_x: True
+                do_scroll_y: True
+                bar_width: dp(8)
+                scroll_type: ['bars', 'content']
+
+                GridLayout:
+                    id: counterparties_table
+                    cols: 1
+                    size_hint: None, None
+                    width: max(self.minimum_width, results_scroll.width)
+                    height: self.minimum_height
+                    spacing: dp(8)
+                    padding: [0, dp(4), 0, dp(4)]
+
+                    # Пример строки, потом можно удалить и заполнять из Python
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(52)
+                        spacing: dp(6)
+                        padding: [dp(8), 0, dp(8), 0]
+
+                        canvas.before:
+                            Color:
+                                rgba: (0.98, 0.98, 0.99, 1)
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10]
+
+                        Label:
+                            text: "ООО Пример"
+                            color: (0.15, 0.15, 0.18, 1)
+                        Label:
+                            text: "7701234567"
+                            color: (0.15, 0.15, 0.18, 1)
+                        Label:
+                            text: "1 250 000"
+                            color: (0.15, 0.15, 0.18, 1)
+                        Label:
+                            text: "12.03.2024"
+                            color: (0.15, 0.15, 0.18, 1)
+                        Label:
+                            text: "Высокий"
+                            color: (0.80, 0.25, 0.20, 1)
+                        Label:
+                            text: "4.2"
+                            color: (0.15, 0.15, 0.18, 1)
