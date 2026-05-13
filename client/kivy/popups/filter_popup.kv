@@ -1,0 +1,144 @@
+#:kivy 2.2.1
+
+<FilterPopup>:
+    size_hint: None, None
+    size: dp(620), dp(470)
+    auto_dismiss: False
+    background: ""
+    background_color: (0, 0, 0, 0.35)
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(24)
+        spacing: dp(14)
+
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [20]
+
+        Label:
+            text: "Фильтр"
+            font_size: "24sp"
+            bold: True
+            color: (0.10, 0.10, 0.12, 1)
+            size_hint_y: None
+            height: dp(34)
+
+        Label:
+            text: "Столбец"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        Spinner:
+            id: filter_column
+            text: ""
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_color: (0.96, 0.97, 0.99, 1)
+            color: (0.10, 0.10, 0.12, 1)
+            on_text: app.root.get_screen("home").update_filter_popup_state(root, self.text)
+
+        Label:
+            text: "Оператор"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        Spinner:
+            id: filter_operator
+            text: ""
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_color: (0.96, 0.97, 0.99, 1)
+            color: (0.10, 0.10, 0.12, 1)
+            on_text: app.root.get_screen("home").on_filter_operator_change(root, self.text)
+
+        Label:
+            text: "Значение"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        TextInput:
+            id: filter_value1
+            multiline: False
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_active: ""
+            background_color: (0.97, 0.97, 0.99, 1)
+            foreground_color: (0.10, 0.10, 0.12, 1)
+            padding: [dp(12), dp(12), dp(12), dp(12)]
+
+        Label:
+            text: "Второе значение"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        TextInput:
+            id: filter_value2
+            multiline: False
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_active: ""
+            background_color: (0.97, 0.97, 0.99, 1)
+            foreground_color: (0.10, 0.10, 0.12, 1)
+            padding: [dp(12), dp(12), dp(12), dp(12)]
+            disabled: True
+            opacity: 0.5
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "Сбросить"
+                background_normal: ""
+                background_color: (0.90, 0.92, 0.96, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release:
+                    app.root.get_screen("home").clear_filters()
+                    root.dismiss()
+
+            Button:
+                text: "Отмена"
+                background_normal: ""
+                background_color: (0.93, 0.94, 0.97, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release: root.dismiss()
+
+            Button:
+                text: "Применить"
+                background_normal: ""
+                background_color: (0.10, 0.45, 0.90, 1)
+                color: (1, 1, 1, 1)
+                on_release:
+                    app.root.get_screen("home").apply_filter(
+                    filter_column.text,
+                    filter_operator.text,
+                    filter_value1.text,
+                    filter_value2.text,
+                    root
+                    )

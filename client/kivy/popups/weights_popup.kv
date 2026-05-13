@@ -1,0 +1,125 @@
+#:kivy 2.2.1
+
+<WeightsPopup>:
+    size_hint: None, None
+    size: dp(520), dp(360)
+    auto_dismiss: False
+    background_color: (0, 0, 0, 0.35)
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(14)
+
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [18]
+
+        Label:
+            text: "Настройка весов модели"
+            color: (0.10, 0.10, 0.12, 1)
+            font_size: "22sp"
+            bold: True
+            size_hint_y: None
+            height: dp(30)
+
+        Label:
+            text: "Сумма весов должна быть равна 100"
+            color: (0.35, 0.35, 0.40, 1)
+            font_size: "12sp"
+            size_hint_y: None
+            height: dp(18)
+
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: dp(42)
+            row_force_default: True
+
+            Label:
+                text: "Доход / сотрудник"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            TextInput:
+                id: weight_income_staff_input
+                multiline: False
+                background_normal: ""
+                background_active: ""
+                background_color: (0.97, 0.97, 0.99, 1)
+                foreground_color: (0.10, 0.10, 0.12, 1)
+
+            Label:
+                text: "Разница доходов"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            TextInput:
+                id: weight_income_diff_input
+                multiline: False
+                background_normal: ""
+                background_active: ""
+                background_color: (0.97, 0.97, 0.99, 1)
+                foreground_color: (0.10, 0.10, 0.12, 1)
+
+            Label:
+                text: "Разница дат"
+                color: (0.15, 0.15, 0.18, 1)
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            TextInput:
+                id: weight_date_diff_input
+                multiline: False
+                background_normal: ""
+                background_active: ""
+                background_color: (0.97, 0.97, 0.99, 1)
+                foreground_color: (0.10, 0.10, 0.12, 1)
+
+        Widget:
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(10)
+
+            Button:
+                text: "Сбросить"
+                background_normal: ""
+                background_color: (0.90, 0.92, 0.96, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release:
+                    weight_income_staff_input.text = "20"
+                    weight_income_diff_input.text = "40"
+                    weight_date_diff_input.text = "40"
+
+            Button:
+                text: "Отмена"
+                background_normal: ""
+                background_color: (0.90, 0.92, 0.96, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release: root.dismiss()
+
+            Button:
+                text: "Применить"
+                background_normal: ""
+                background_color: (0.10, 0.45, 0.90, 1)
+                color: (1, 1, 1, 1)
+                on_release:
+                    app.root.get_screen("home").apply_weights(
+                    weight_income_staff_input.text,
+                    weight_income_diff_input.text,
+                    weight_date_diff_input.text,
+                    root
+                    )

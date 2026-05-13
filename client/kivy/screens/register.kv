@@ -1,0 +1,261 @@
+#:kivy 2.2.1
+
+<RegisterScreen>:
+    name: "register"
+
+    canvas.before:
+        Color:
+            rgba: (0.95, 0.95, 0.97, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(24)
+
+        Widget:
+            size_hint_y: 1
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+            size_hint_y: None
+            height: dp(560)
+
+            FloatLayout:
+                size_hint: None, None
+                width: dp(430)
+                height: dp(560)
+
+                BoxLayout:
+                    size_hint: None, None
+                    width: dp(420)
+                    height: dp(540)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    orientation: "vertical"
+                    padding: dp(22)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 0.10)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(4))
+                            size: self.size
+                            radius: [18]
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [18]
+
+                    Label:
+                        text: "Регистрация"
+                        color: (0.1, 0.1, 0.12, 1)
+                        font_size: "26sp"
+                        bold: True
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+
+                    Label:
+                        id: msg_label
+                        text: ""
+                        color: (0.85, 0.2, 0.2, 1)  # по умолчанию красный
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+
+                    ScrollView:
+                        do_scroll_x: False
+
+                        GridLayout:
+                            cols: 1
+                            spacing: dp(8)
+                            padding: [0, dp(6), 0, dp(6)]
+                            size_hint_y: None
+                            height: self.minimum_height
+
+                            # ФИО
+                            Label:
+                                text: "ФИО"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            TextInput:
+                                id: reg_full_name
+                                hint_text: "Иванов Иван Иванович"
+                                multiline: False
+                                size_hint_y: None
+                                height: dp(44)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                            # Почта
+                            Label:
+                                text: "Почта"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            TextInput:
+                                id: reg_email
+                                hint_text: "example@mail.com"
+                                multiline: False
+                                size_hint_y: None
+                                height: dp(44)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                            # Пароль
+                            Label:
+                                text: "Пароль"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            BoxLayout:
+                                size_hint_y: None
+                                height: dp(44)
+                                spacing: dp(6)
+
+                                TextInput:
+                                    id: reg_password
+                                    hint_text: "Придумайте пароль"
+                                    multiline: False
+                                    password: True
+                                    foreground_color: (0.1, 0.1, 0.12, 1)
+                                    hint_text_color: (0.55, 0.55, 0.60, 1)
+                                    background_normal: ""
+                                    background_active: ""
+                                    background_color: (0.97, 0.97, 0.99, 1)
+                                    padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                                Button:
+                                    text: "visibility_off"
+                                    font_name: "MaterialIcons"
+                                    size_hint_x: None
+                                    width: dp(48)
+                                    background_normal: ""
+                                    background_color: (0.97, 0.97, 0.99, 1)
+                                    color: (0.35, 0.35, 0.40, 1)
+                                    on_release:
+                                        reg_password.password = not reg_password.password
+                                        self.text = "visibility" if not reg_password.password else "visibility_off"
+
+                            # Номер (опционально)
+                            Label:
+                                text: "Номер (опционально)"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            TextInput:
+                                id: reg_phone
+                                hint_text: "+7..."
+                                multiline: False
+                                size_hint_y: None
+                                height: dp(44)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                            # Название компании (опционально)
+                            Label:
+                                text: "Название компании (опционально)"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            TextInput:
+                                id: reg_company_name
+                                hint_text: "ООО Ромашка"
+                                multiline: False
+                                size_hint_y: None
+                                height: dp(44)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                            # ИНН компании (опционально)
+                            Label:
+                                text: "ИНН компании (опционально)"
+                                color: (0.25, 0.25, 0.28, 1)
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+
+                            TextInput:
+                                id: reg_company_inn
+                                hint_text: "ИНН вашей компании"
+                                multiline: False
+                                input_filter: "int"
+                                size_hint_y: None
+                                height: dp(44)
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                    BoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: dp(46)
+
+                        Button:
+                            text: "Назад"
+                            background_normal: ""
+                            background_color: (0.90, 0.92, 0.96, 1)
+                            color: (0.10, 0.10, 0.12, 1)
+                            on_release: root.on_back()
+
+                        Button:
+                            text: "Создать аккаунт"
+                            background_normal: ""
+                            background_color: (0.10, 0.45, 0.90, 1)
+                            color: (1, 1, 1, 1)
+                            on_release: root.on_submit()
+
+        Widget:
+            size_hint_y: 1

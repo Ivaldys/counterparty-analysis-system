@@ -1,0 +1,181 @@
+#:kivy 2.2.1
+
+<LoginScreen>:
+    name: "login"
+
+    canvas.before:
+        Color:
+            rgba: (0.95, 0.95, 0.97, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(24)
+
+        Widget:
+            size_hint_y: 1
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            FloatLayout:
+                size_hint: None, None
+                width: dp(390)
+                height: card.height + dp(10)
+
+                BoxLayout:
+                    id: card
+                    size_hint: None, None
+                    width: dp(380)
+                    height: self.minimum_height
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    orientation: "vertical"
+                    padding: dp(22)
+                    spacing: dp(12)
+
+                    canvas.before:
+                        # тень
+                        Color:
+                            rgba: (0, 0, 0, 0.10)
+                        RoundedRectangle:
+                            pos: (self.x, self.y - dp(4))
+                            size: self.size
+                            radius: [18]
+                        # карточка
+                        Color:
+                            rgba: (1, 1, 1, 1)
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [18]
+
+                    Label:
+                        text: "Вход"
+                        color: (0.1, 0.1, 0.12, 1)
+                        font_size: "32sp"
+                        bold: True
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+
+                    Label:
+                        id: login_msg_label
+                        text: ""
+                        color: (0.85, 0.2, 0.2, 1)
+                        size_hint_y: None
+                        height: self.texture_size[1] if self.text else 0
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(8)
+                        size_hint_y: None
+                        height: self.minimum_height
+
+                        Label:
+                            text: "Почта"
+                            color: (0.25, 0.25, 0.28, 1)
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+
+                        TextInput:
+                            id: email_input
+                            hint_text: "example@mail.com"
+                            multiline: False
+                            write_tab: False
+                            size_hint_y: None
+                            height: dp(44)
+                            foreground_color: (0.1, 0.1, 0.12, 1)
+                            hint_text_color: (0.55, 0.55, 0.60, 1)
+                            background_normal: ""
+                            background_active: ""
+                            background_color: (0.97, 0.97, 0.99, 1)
+                            padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                        Label:
+                            text: "Пароль"
+                            color: (0.25, 0.25, 0.28, 1)
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(44)
+                            spacing: dp(6)
+
+                            TextInput:
+                                id: password_input
+                                hint_text: "Введите пароль"
+                                multiline: False
+                                password: True
+                                write_tab: False
+                                foreground_color: (0.1, 0.1, 0.12, 1)
+                                hint_text_color: (0.55, 0.55, 0.60, 1)
+                                background_normal: ""
+                                background_active: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                padding: [dp(12), dp(12), dp(12), dp(12)]
+
+                            Button:
+                                text: "visibility_off"
+                                font_name: "MaterialIcons"
+                                size_hint_x: None
+                                width: dp(48)
+                                background_normal: ""
+                                background_color: (0.97, 0.97, 0.99, 1)
+                                color: (0.35, 0.35, 0.40, 1)
+                                on_release:
+                                    password_input.password = not password_input.password
+                                    self.text = "visibility" if not password_input.password else "visibility_off"
+                    Label:
+                        text: "[ref=forgot][color=1a73e8]Забыл пароль[/color][/ref]"
+                        markup: True
+                        size_hint_y: None
+                        height: dp(26)
+                        halign: "center"
+                        valign: "middle"
+                        text_size: self.size
+                        on_ref_press: root.on_forgot_password()
+
+                    Button:
+                        text: "Войти"
+                        size_hint_y: None
+                        height: dp(46)
+                        background_normal: ""
+                        background_color: (0.10, 0.45, 0.90, 1)
+                        color: (1, 1, 1, 1)
+                        on_release: root.on_login(email_input.text, password_input.text)
+
+                    Button:
+                        text: "Регистрация"
+                        size_hint_y: None
+                        height: dp(46)
+                        background_normal: ""
+                        background_color: (0.90, 0.92, 0.96, 1)
+                        color: (0.10, 0.10, 0.12, 1)
+                        on_release: root.on_register()
+
+                    Button:
+                        text: "Выход"
+                        size_hint_y: None
+                        height: dp(46)
+                        background_normal: ""
+                        background_color: (0.90, 0.92, 0.96, 1)
+                        color: (0.10, 0.10, 0.12, 1)
+                        on_release: root.on_exit()
+
+        Widget:
+            size_hint_y: 1

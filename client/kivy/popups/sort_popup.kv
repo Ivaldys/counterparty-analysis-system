@@ -1,0 +1,99 @@
+#:kivy 2.2.1
+
+<SortPopup>:
+    size_hint: None, None
+    size: dp(560), dp(330)
+    auto_dismiss: False
+    background: ""
+    background_color: (0, 0, 0, 0.35)
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(24)
+        spacing: dp(14)
+
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [20]
+
+        Label:
+            text: "Сортировка"
+            font_size: "24sp"
+            bold: True
+            color: (0.10, 0.10, 0.12, 1)
+            size_hint_y: None
+            height: dp(34)
+
+        Label:
+            text: "Столбец"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        Spinner:
+            id: sort_column
+            text: ""
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_color: (0.96, 0.97, 0.99, 1)
+            color: (0.10, 0.10, 0.12, 1)
+
+        Label:
+            text: "Направление"
+            size_hint_y: None
+            height: dp(22)
+            color: (0.35, 0.35, 0.40, 1)
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        Spinner:
+            id: sort_direction
+            text: "По возрастанию"
+            values: ["По возрастанию", "По убыванию"]
+            size_hint_y: None
+            height: dp(44)
+            background_normal: ""
+            background_color: (0.96, 0.97, 0.99, 1)
+            color: (0.10, 0.10, 0.12, 1)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "Сбросить"
+                background_normal: ""
+                background_color: (0.90, 0.92, 0.96, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release:
+                    app.root.get_screen("home").clear_sort()
+                    root.dismiss()
+
+            Button:
+                text: "Отмена"
+                background_normal: ""
+                background_color: (0.93, 0.94, 0.97, 1)
+                color: (0.10, 0.10, 0.12, 1)
+                on_release: root.dismiss()
+
+            Button:
+                text: "Применить"
+                background_normal: ""
+                background_color: (0.10, 0.45, 0.90, 1)
+                color: (1, 1, 1, 1)
+                on_release:
+                    app.root.get_screen("home").apply_sort(
+                    sort_column.text,
+                    sort_direction.text,
+                    root
+                    )
